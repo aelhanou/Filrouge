@@ -4,7 +4,7 @@
     @click="yo"
     style="width: 77%; display: flex; overflow-x: scroll; margin: auto"
   >
-    <div v-for="dt in data" :key="dt.id" style="margin: 5px">
+    <div v-for="(dt,index) in data" :key="dt.id" style="margin: 5px">
       <div class="img-anime" style="width: 200px !important">
         <img
           :src="require('../assets/' + dt.image)"
@@ -23,7 +23,7 @@
           class="showEp"
           :to="`/ShowAnime/${dt.id}`"
           style="color: white; text-decoration: none"
-          >Episode {{ dt.id }}</router-link
+          >Episode {{ index + 1 }}</router-link
         >
       </div>
     </div>

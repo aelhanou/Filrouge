@@ -8,7 +8,7 @@
       autoplay
       type="mp4"
     ></video>
-    <div
+    <div class="wordsuptovideo"
       style="
         width: 100%;
         position: absolute;
@@ -80,7 +80,7 @@ export default {
   methods: {
     handleScroll() {
       // Any code to be executed when the window is scrolled
-      this.isUserScrolling = window.scrollY < 250;
+      this.isUserScrolling = window.scrollY < 350;
       // console.log(this.isUserScrolling);
       this.$refs.myvideo.play();
       if (this.isUserScrolling) {
@@ -103,5 +103,32 @@ export default {
 <style>
 .yo {
   clip-path: inset(0px 0px 0px 0px);
+}
+
+@media screen and (max-width: 1340px ) {
+  .wordsuptovideo {
+    top: 345px !important;
+  }
+}
+@media screen and (max-width: 1200px ) {
+  .wordsuptovideo {
+    top: 293px !important;
+  }
+}
+@media screen and (max-width: 1116px ) {
+  .wordsuptovideo {
+    top: 250px !important;
+  }
+}
+@media screen and (max-width: 980px ) {
+  .wordsuptovideo {
+    top: 170px !important;
+  }
+}
+
+@media screen and (max-width: 980px ) {
+  .wordsuptovideo {
+    display: none !important;
+  }
 }
 </style>

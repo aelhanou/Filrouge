@@ -3,7 +3,11 @@
 
 require_once '../app/vendor/autoload.php';
 
+require_once '../app/vendor/firebase/php-jwt/src/SignatureInvalidException.php';
+
 use Firebase\JWT\JWT;
+
+
 
 
 header('Access-Control-Allow-Origin: *');
@@ -12,11 +16,6 @@ header('Content-Type: application/json');
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE,OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-
-// header('Access-Control-Allow-Origin: *');
-// header('Content-Type: application/json');
-// header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
-// header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 class Controller
 {
@@ -40,21 +39,28 @@ class Controller
 
     public function generateToken()
     {
-
         $payload = array(
             "iss" => "localhost",
             "aud" => "localhost",
-            "iat" => 1356999524,
-            "nbf" => 1357000000,
-            "name" => "azeddine"
+            "iat" => time(),
+            'exp' => time() + (60 * 15)
         );
 
-        $jwt = JWT::encode($payload, $this->key);
+        $jwt = JWT::encode($payload, $this->key );
         return $jwt;
-
     }
+    public function gettokenFromFront()
+    {
+        $headers = apache_request_headers();
+        if (isset($headers['Authorization'])) {
+            return str_replace('Bearer ', '', $headers['Authorization']);
+        } else {
+            return false;
+        }
+    }
+
     public function valid_token($token)
     {
-        return JWT::decode($token, $this->key);
+        return JWT::decode($token, $this->key, ['HS256']);
     }
 }

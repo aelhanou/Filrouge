@@ -21,7 +21,7 @@ class RegisterM
 
     public function read($data)
     {
-        $query = "SELECT firstName,LastName,email FROM `$this->table` WHERE id=:id";
+        $query = "SELECT connected,role,firstName,LastName,email FROM `$this->table` WHERE id=:id";
         $this->conn->query($query);
         $this->conn->bind(":id", $data->id);
 
@@ -94,6 +94,18 @@ class RegisterM
         $this->conn->bind(":firstName", $data->firstName);
         $this->conn->bind(":LastName", $data->LastName);
         $this->conn->bind(":email", $data->email);
+        if ($this->conn->execute())
+            return true;
+        return false;
+    }
+
+    public function update($data)
+    {
+        $query = "UPDATE `$this->table` SET connected=:connected WHERE id=:id";
+        $this->conn->query($query);
+
+        $this->conn->bind(":id", $data->id);
+        $this->conn->bind(":connected", $data->connected);
         if ($this->conn->execute())
             return true;
         return false;

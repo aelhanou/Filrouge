@@ -19,7 +19,7 @@ class LoginM
           
 
         $query = "SELECT id,email,password FROM register WHERE email=:email AND password=:password";
-        $this->conn->query($query);
+        $stmt = $this->conn->query($query);
 
         
         $this->conn->bind(":email", $data->email);
@@ -27,8 +27,6 @@ class LoginM
         $stm = $this->conn->single();
         $st = $this->conn->rowCount();
       
-        
-        
         if ($st > 0)
             return $stm;
         return false;

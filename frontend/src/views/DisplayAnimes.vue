@@ -1,14 +1,14 @@
 <template>
   <div class="gen" style="margin-top: 71px; transition: 0.5s">
     <div class="navBar">
-      <span
+      <!-- <span
         ><router-link
           to="/Dashboard"
           style="color: white !important; text-decoration: none"
           >Dashboard</router-link
         ></span
-      >
-      <span
+      > -->
+      <span v-if="role"
         ><router-link
           to="/InsertAnime"
           style="color: white !important; text-decoration: none"
@@ -22,14 +22,14 @@
           >Profile</router-link
         >
       </span>
-      <span
+      <span v-if="role"
         ><router-link
           to="/DisplayAnimes"
           style="color: white !important; text-decoration: none"
           >Display Animes</router-link
         ></span
       >
-      <span
+      <span v-if="role"
         ><router-link
           to="/ContactUsMessages"
           style="color: white !important; text-decoration: none"
@@ -39,7 +39,7 @@
     </div>
     <div
       class="container-fluid removeBar"
-      style="max-width: 80%; padding: 5px; background-color: #d7d7d"
+      style="min-width:52%; padding: 5px; background-color: #d7d7d"
     >
       <table class="table-responsive table-striped">
         <thead>
@@ -118,6 +118,7 @@ export default {
       data: [],
       dataId: null,
       idPagination: 5,
+      role : ""
     };
   },
   methods: {
@@ -200,6 +201,7 @@ export default {
     },
   },
   created() {
+    this.role = localStorage.getItem('role') == "admin"
     this.readAllAnimes();
     this.readAllid();
   },

@@ -2,7 +2,7 @@
   <div>
     <div class="genDescription">
       <div class="insideDescription" style="margin-top: 100px">
-        <div class="imgDescription" style="width: 550px !important">
+        <div class="imgDescription" style="width:949px !important">
           <img
             v-if="data.image"
             style="width: 100% !important; height: 450px !important"
@@ -66,7 +66,7 @@
       <span class="EpisodeNumber">{{ data.numberOfEpisodes }}</span>
     </div>
     <div class="EpisodeDescription">
-      <EpisodeDescription :data="dataSes" />
+      <EpisodeDescription  :data="dataSes" />
     </div>
 
     <div v-if="ShowPopUpEp" class="GPopUp">
@@ -128,11 +128,11 @@ export default {
     Readcomments,
   },
   methods: {
+
     doAction() {
       let action = JSON.parse(this.SessEp);
       switch (action.action) {
-        case "SessionEpiso":
-          this.SessionE(action.id);
+        case "SessionEpiso" : this.SessionE(action.id);
 
           break;
 
@@ -145,7 +145,6 @@ export default {
       console.log(tt);
     },
     SessionE(id) {
-
       // this.idSess = id;
       this.readEpisodes(id)
     },
@@ -184,6 +183,7 @@ export default {
       });
 
       this.data = await resp.json();
+      console.log(this.data);
     },
     async readEpisodes(id_s) {
       let id = this.$route.params.id;
@@ -538,6 +538,29 @@ img:hover {
   }
   .AllDescription {
     gap: 60px;
+  }
+}
+
+@media screen and (max-width: 525px ) {
+  .show-tags {
+        display: flex;
+    flex-direction: column;
+    margin: auto;
+  }
+}
+
+@media screen and (max-width: 428px   ) {
+  .EpisodesNumber {
+        margin-left: 0px;
+  }
+  .UnderAge {
+    margin-left: 0px;
+  }
+  .QuoteDes {
+     margin-left: 0px;
+  }
+  .TheRightAnimeDescription {
+    margin-left: 0px;
   }
 }
 </style>

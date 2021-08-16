@@ -116,6 +116,36 @@ export default {
       console.log("yyy");
       this.$emit("clicked");
     },
+    async getroleuser()
+    {
+     let resp = await fetch("http://localhost/fr/RegisterC/read",{
+        method: "POST",
+        headers: {
+          "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+          id : localStorage.getItem("id")
+        })
+      })
+      this.name = await resp.json()
+
+      localStorage.setItem("role", this.name.role);
+    }
+    ,
+    async updateConnected()
+    {
+       await fetch("http://localhost/fr/RegisterC/update",{
+        method: "PUT",
+        headers: {
+          "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+          id : localStorage.getItem("id"),
+          connected : 1
+        })
+      }) 
+    }
+    ,
     async login() {
       let resp = await fetch("http://localhost/fr/loginC/check", {
         method: "POST",
@@ -132,7 +162,8 @@ export default {
         localStorage.setItem("id", this.data[1].id);
         localStorage.setItem("token", this.data.token);
         localStorage.setItem("id_secket", this.data[1].id);
-
+        this.getroleuser()
+        this.updateConnected()
         this.$router.push("/");
         this.$emit("refresh");
         this.email = "";

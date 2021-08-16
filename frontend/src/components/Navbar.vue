@@ -37,7 +37,7 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-form>
+          <b-nav-form v-if="!DisplaySearch(['/'])">
             <b-form-input
               id="inputsearch"
               size="sm"
@@ -64,11 +64,10 @@
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template #button-content>
-              <em style="outline: none !important;"
+              <em style="outline: none !important"
                 ><img
-                  v-if="getImg.image"
+                  v-if="data"
                   :src="require('../assets/' + getImg.image)"
-                 
                   alt="ME"
                   style="
                     width: 45px;
@@ -76,52 +75,51 @@
                     border-radius: 15px;
                     background-color: white;
                     object-fit: contain;
-                    outline:none;
+                    outline: none;
                   "
-              />
-              <img 
-                v-else
-                src="https://bootdey.com/img/Content/avatar/avatar6.png" style="
+                />
+                <img
+                  v-else
+                  src="https://bootdey.com/img/Content/avatar/avatar6.png"
+                  alt="Anonymous"
+                  style="
                     width: 45px;
                     height: 43px;
                     border-radius: 15px;
                     background-color: white;
                     object-fit: contain;
-                    outline:none;
-                  " alt="">
+                    outline: none;
+                  "
+                />
               </em>
             </template>
-            <b-dropdown-item v-if="data != null">Azeddine Elhanouni</b-dropdown-item>
-            <b-dropdown-item v-if="data != null" href="#"
+            <b-dropdown-item v-if="data">{{name.firstName}} {{name.LastName}}</b-dropdown-item>
+            <b-dropdown-item v-if="data" href="#"
               ><router-link
                 href="#"
-                to="/Dashboard"
+                to="/Profile"
                 style="color: black !important"
-                >Dashboard
+                >Profile
               </router-link>
             </b-dropdown-item>
 
-            <b-dropdown-item v-if="data == null" href="#"
+            <b-dropdown-item v-if="data == ''" href="#"
               ><router-link to="/SignUp" style="color: black !important"
                 >Sign Up</router-link
               ></b-dropdown-item
             >
-            <b-dropdown-item v-if="data != null" href="#"
-              ><router-link to="/testVuex" style="color: black !important"
-                >testVuex</router-link
-              ></b-dropdown-item
-            >
+            
             <b-dropdown-item href="#"
               ><router-link to="/ContactUs" style="color: black !important"
                 >Contact Us</router-link
               ></b-dropdown-item
             >
-            <b-dropdown-item v-if="data == null" href="#"
+            <b-dropdown-item v-if="data == ''" href="#"
               ><router-link to="/SignIn" style="color: black !important"
                 >Sign In</router-link
               ></b-dropdown-item
             >
-            <b-dropdown-item v-if="data != null" href="#"
+            <b-dropdown-item v-if="data" href="#"
               ><router-link to="/LogOut" style="color: black !important"
                 >Log Out</router-link
               ></b-dropdown-item
@@ -138,27 +136,46 @@ export default {
   name: "Navbar",
   data() {
     return {
-      data: localStorage.getItem("token")
-        ? localStorage.getItem("token")
-        : null,
+      data: localStorage.getItem("token") ? localStorage.getItem("token") : "",
       getImg: [],
+      name : ""
     };
   },
   props: {},
   methods: {
-    inputsearch()
+    DisplaySearch(arr) {
+      for (let i = 0; i < arr.length; i++) {
+        if (this.$route.path != arr[i]) {
+          return true;
+        }
+      }
+    },
+    inputsearch() {
+      let inputvalue = document.getElementById("inputsearch");
+      let h4 = document.querySelectorAll(".h4Title");
+
+      Array.from(h4).map((e) => {
+        if (!e.innerHTML.includes(inputvalue.value)) {
+          e.parentElement.parentNode.parentElement.parentElement.style.display =
+            "none";
+        } else {
+          e.parentElement.parentNode.parentElement.parentElement.style.display =
+            "block";
+        }
+      });
+    },
+    async displayNameofUser()
     {
-        let inputvalue = document.getElementById("inputsearch")
-        let h4 = document.querySelectorAll(".h4Title")
-
-
-          if(h4[0].innerHTML.includes(inputvalue.value))
-          {
-            h4[0].parentElement.parentNode.parentElement.parentElement.style.display = "none";
-          }
-        // Array.from(h4).map(e=>{
-        //   inputvalue.value.
-        // })
+      let resp = await fetch("http://localhost/fr/RegisterC/read",{
+        method: "POST",
+        headers: {
+          "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+          id : localStorage.getItem("id")
+        })
+      })
+      this.name = await resp.json()
     }
     ,
     async getImage() {
@@ -178,6 +195,7 @@ export default {
     },
   },
   created() {
+    this.displayNameofUser()
     this.getImage();
     setTimeout(() => {
       this.takeOut();

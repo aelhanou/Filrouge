@@ -1,20 +1,24 @@
 <template>
-  <div class="yo">
-    <video  controls   width="100%" style="min-height: 719px;" autoplay type="mp4" ></video>
+  <div class="yo"> 
+    <img :src="dragonBallWallpaper" width="100%" style="min-height: 719px;" alt="">
+      <!-- <video  :src="video"   ref="myvideo1"  width="100%" style="min-height: 719px;" autoplay type="mp4" ></video> -->
   </div>
 </template>
 
 <script>
-import video from "../assets/vid.mp4";
+import dragonBallWallpaper from "../assets/dragonBallWallpaper.jpg";
+
 export default {
  
   name: "Video",
   data() {
     return {
-      video,
+      dragonBallWallpaper,
+      
     };
   },
   components: {},
+  
 };
 </script>
 

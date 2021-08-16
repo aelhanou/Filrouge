@@ -1,14 +1,14 @@
 <template>
   <div class="gen" style="margin-top:71px;">
     <div class="navBar">
-      <span
+      <!-- <span
         ><router-link
           to="/Dashboard"
           style="color: white !important; text-decoration: none"
           >Dashboard</router-link
         ></span
-      >
-      <span
+      > -->
+      <span v-if="role"
         ><router-link
           to="/InsertAnime"
           style="color: white !important; text-decoration: none"
@@ -23,14 +23,14 @@
         >
       </span>
 
-      <span
+      <span v-if="role"
         ><router-link
           to="/DisplayAnimes"
           style="color: white !important; text-decoration: none"
           >Display Animes</router-link
         ></span
       >
-      <span
+      <span v-if="role"
         ><router-link
           to="/ContactUsMessages"
           style="color: white !important; text-decoration: none"
@@ -230,6 +230,7 @@ export default {
       created_At: "",
       numberOfEpisodes: "",
       description: "",
+      role : ""
     };
   },
   methods: {
@@ -317,6 +318,7 @@ export default {
     },
   },
   created() {
+    this.role = localStorage.getItem('role') == "admin"
     this.fetchanime();
     this.fetchGenreOfAnime();
   },

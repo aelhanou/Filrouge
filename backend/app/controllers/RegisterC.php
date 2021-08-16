@@ -146,5 +146,25 @@ class RegisterC extends Controller
         }
     }
 
+    public function update()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+            $data = json_decode(file_get_contents("php://input"));
+
+            // $headers = apache_request_headers();
+
+            // $headers = $headers['authorization'] ? explode(" ", $headers['authorization']) : '';
+
+            // if (count($headers) == 1) {
+            //     echo json_encode(["response" => "redirect"]);
+            // } else {
+
+            // die(var_dump($data));
+                if ($d = $this->reg->update($data))
+                    echo json_encode($d,JSON_INVALID_UTF8_IGNORE);
+            // }
+        }
+    }
+
     
 }

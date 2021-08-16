@@ -114,19 +114,6 @@ const router = new VueRouter({
 
 
 router.beforeEach((to, from, next) => {
-  if (to.name === 'ShowAnime') {
-    if (!localStorage.getItem('token')) {
-      next({name: "SignIn"});
-      return;
-    }
-  }
-  console.log(to.name);
-  if (to.fullPath === '/ShowAnimeId') {
-    if (!localStorage.getItem('token')) {
-      next({name: "SignIn"});
-      return;
-    }
-  }
   if (to.name === 'Profile') {
     if (!localStorage.getItem('token')) {
       next({name: "SignIn"});
@@ -135,6 +122,43 @@ router.beforeEach((to, from, next) => {
   }
 
   if (to.name === 'DisplayAnimes') {
+    if (!localStorage.getItem('token') || localStorage.getItem('role') != 'admin' ) {
+      next({name: "SignIn"});
+      return;
+    }
+  }
+  if (to.name === 'SignIn') {
+    if (localStorage.getItem('token')) {
+      next({name: "Home"});
+      return;
+    }
+  }
+  if (to.name === 'SignUp') {
+    if (localStorage.getItem('token')) {
+      next({name: "Home"});
+      return;
+    }
+  }
+  if (to.name === 'Dashboard') {
+    if (!localStorage.getItem('token')) {
+      next({name: "SignIn"});
+      return;
+    }
+  }
+  if (to.name === 'InsertAnime') {
+    if (!localStorage.getItem('token') || localStorage.getItem('role') != 'admin') {
+      next({name: "SignIn"});
+      return;
+    }
+  }
+  if (to.name === 'ContactUsMessages') {
+    if (!localStorage.getItem('token') || localStorage.getItem('role') != 'admin') {
+      next({name: "SignIn"});
+      return;
+    }
+  }
+
+  if (to.name === 'Profile') {
     if (!localStorage.getItem('token')) {
       next({name: "SignIn"});
       return;

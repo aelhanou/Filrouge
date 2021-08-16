@@ -12,6 +12,14 @@ class AnimeM
     }
 
 
+
+    public function readCategorise($data)
+    {
+        $query = "SELECT animes.id,animes.title,animes.genre,animes.Created_at,animes.image,animediscription.description,animediscription.numberOfEpisodes,animediscription.Status,animediscription.timeOfEpisode,animediscription.TheBeginningOfShow FROM `animes` INNER JOIN animediscription ON animediscription.id_info_anime = animes.id WHERE  animes.genre = '$data->category'";
+        $this->conn->query($query);
+        return $this->conn->resultSet();
+    }
+
     public function read()
     {
         $query = "SELECT * FROM `$this->table`";

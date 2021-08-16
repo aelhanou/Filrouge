@@ -2,7 +2,7 @@
   <div>
     <div class="all">
       <div class="videoMSG">
-        <div style="height: 140vh">
+        <div class="vidmedia" style="height: 140vh">
           <!-- <p>Video</p> -->
           <iframe
             id="DzGif"
@@ -13,34 +13,18 @@
             allowfullscreen
           ></iframe>
         </div>
-        <div class="msg" style="display: flex">
-          <div
-            style="
-              width: 50%;
-              display: flex;
-              flex-direction: column;
-              border: 1px solid gray;
-              background: gainsboro;
-            "
-          >
-            <div id="getMsg" style="height: 267px; overflow-y: scroll">
-              <span
-                style="
-                  color: black;
-                  display: flex;
-                  margin-top: 3px;
-                  padding: 7px 0px 3px 22px;
-                  background-color: gray;
-                "
-                v-if="readoldMsgsError == 'empty'"
-              >
-                no msg
-              </span>
-              <div
-                v-else
-                v-for="readoldMsg in readoldMsgs"
-                :key="readoldMsg.id"
-              >
+        <div  v-if="idLocalstorage" class="msg" style="display: flex">
+          
+            <div
+              style="
+                width: 50%;
+                display: flex;
+                flex-direction: column;
+                border: 1px solid gray;
+                background: gainsboro;
+              "
+            >
+              <div id="getMsg" style="height: 267px; overflow-y: scroll">
                 <span
                   style="
                     color: black;
@@ -49,94 +33,130 @@
                     padding: 7px 0px 3px 22px;
                     background-color: gray;
                   "
-                  v-if="readoldMsg.user_id == idLocalstorage"
+                  v-if="readoldMsgsError == 'empty'"
                 >
-                  ME: {{ readoldMsg.msg_content }} -->
-                  {{ readoldMsg.msg_time }}
+                  no msg
                 </span>
-                <span
-                  style="
-                    color: black;
-                    display: flex;
-                    margin-top: 3px;
-                    padding: 7px 0px 3px 22px;
-                    background-color: yellow;
-                  "
+                <div
                   v-else
+                  v-for="readoldMsg in readoldMsgs"
+                  :key="readoldMsg.id"
                 >
-                  {{ readoldMsg.firstName }} {{ readoldMsg.LastName }} :
-                  {{ readoldMsg.msg_content }} --> {{ readoldMsg.msg_time }}
-                </span>
+                  <span
+                    style="
+                      color: black;
+                      display: flex;
+                      margin-top: 3px;
+                      padding: 7px 0px 3px 22px;
+                      background-color: gray;
+                    "
+                    v-if="readoldMsg.user_id == idLocalstorage"
+                  >
+                    ME: {{ readoldMsg.msg_content }} -->
+                    {{ readoldMsg.msg_time }}
+                  </span>
+                  <span
+                    style="
+                      color: black;
+                      display: flex;
+                      margin-top: 3px;
+                      padding: 7px 0px 3px 22px;
+                      background-color: yellow;
+                    "
+                    v-else
+                  >
+                    {{ readoldMsg.firstName }} {{ readoldMsg.LastName }} :
+                    {{ readoldMsg.msg_content }} --> {{ readoldMsg.msg_time }}
+                  </span>
+                </div>
               </div>
-            </div>
 
-            <div style="display: flex">
-              <input
-                type="text"
-                v-model="sendMsg"
-                style="width: 83%; height: 51px"
-              />
-              <button @click="startchat">click</button>
-            </div>
-          </div>
-          <div style="width: 50%">
-            <h1>friends list</h1>
-            <div class="users" style="height: 240px; overflow-y: scroll">
-              <div
-                v-for="dUser in dataUsers"
-                :key="dUser.id"
-                class="user"
-                style="
-                  display: flex;
-                  gap: 10px;
-                  margin-left: 10px;
-                  margin-top: 5px;
-                "
-              >
-                <img
-                  :src="require('../assets/' + dUser.image)"
-                  style="
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 50%;
-                    object-fit: contain;
-                    background-color: gainsboro;
-                    padding: 3px;
-                  "
-                  alt="first User"
+              <div style="display: flex">
+                <input
+                  type="text"
+                  v-model="sendMsg"
+                  style="width: 83%; height: 51px"
                 />
-                <h3
-                  class="ClickToactive"
-                  @click.prevent="getIdUser($event, dUser.id)"
-                  style="margin-top: 6px; cursor: pointer ;width: 251px;display: flex;"
-                >
-                  {{ dUser.firstName }} {{ dUser.LastName }}
-                </h3>
-                <span v-if="dUser.connected == 0 "
-                  style="
-                    
-                    width: 12px;
-                    height: 12px;
-                    border-radius: 50%;
-                    background-color: red;
-                    margin-top: 10px;
-                  "
-                ></span>
-                <span v-else
-                  style="
-                    
-                    width: 12px;
-                    height: 12px;
-                    border-radius: 50%;
-                    background-color: green;
-                    margin-top: 10px;
-                  "
-                ></span>
-                
+                <button @click="startchat">click</button>
               </div>
             </div>
-          </div>
+            <div style="width: 50%">
+              <h1>friends list</h1>
+              <div class="users" style="height: 240px; overflow-y: scroll">
+                <div
+                  v-for="dUser in dataUsers"
+                  :key="dUser.id"
+                  class="user"
+                  style="
+                    display: flex;
+                    gap: 10px;
+                    margin-left: 10px;
+                    margin-top: 5px;
+                  "
+                >
+                  <img
+                    :src="require('../assets/' + dUser.image)"
+                    style="
+                      width: 50px;
+                      height: 50px;
+                      border-radius: 50%;
+                      object-fit: contain;
+                      background-color: gainsboro;
+                      padding: 3px;
+                    "
+                    alt="first User"
+                  />
+                  <h3
+                    class="ClickToactive"
+                    @click.prevent="getIdUser($event, dUser.id)"
+                    style="
+                      margin-top: 6px;
+                      cursor: pointer;
+                      width: 251px;
+                      display: flex;
+                    "
+                  >
+                    {{ dUser.firstName }} {{ dUser.LastName }}
+                  </h3>
+                  <span
+                    v-if="dUser.connected == '0'"
+                    style="
+                      width: 12px;
+                      height: 12px;
+                      border-radius: 50%;
+                      background-color: red;
+                      margin-top: 10px;
+                    "
+                  ></span>
+                  <span
+                    v-else
+                    style="
+                      width: 12px;
+                      height: 12px;
+                      border-radius: 50%;
+                      background-color: green;
+                      margin-top: 10px;
+                    "
+                  ></span>
+                </div>
+              </div>
+            </div>
+          
+          
         </div>
+        <div
+            style="
+              width: 100%;
+              display: flex;
+              height: 100%;
+              margin: auto;
+              justify-content: center;
+              align-items: center;
+            "
+            v-else
+          >
+            For Chat with Friends .. You should make account
+          </div>
       </div>
       <div class="EpisodesAnimeAndOtherAnime">
         <div class="EpisodesAnime">
@@ -183,7 +203,7 @@
             </div>
           </div>
           <div class="Episodes">
-            <div class="EpInfo" v-for="a in data" :key="a.id">
+            <div class="EpInfo" v-for="(a,index) in data" :key="a.id">
               <div class="Epvideo">
                 <iframe
                   ref="mOver"
@@ -199,7 +219,7 @@
                   style="font-size: 1rem"
                   @click.prevent="yo(a.Episodes)"
                 >
-                  Episode {{ a.id }}
+                  Episode {{ index + 1 }}
                 </h3>
                 <p class="pEp" style="font-size: 0.85rem">description</p>
               </div>
@@ -207,11 +227,15 @@
           </div>
         </div>
         <div class="DifferentAnime">
-          <div class="dfAnime">
+          <div
+            v-for="dCategory in dataCategory"
+            :key="dCategory.id"
+            class="dfAnime"
+          >
             <div class="difImg">
               <img
-                :src="require('../assets/dragonBall.jpg')"
-                style="height: 183px; border-radius: 7px"
+                :src="require('../assets/' + dCategory.image)"
+                style="height: 183px; border-radius: 7px;width: 142px;"
                 alt=""
               />
             </div>
@@ -226,104 +250,10 @@
                 "
                 class="difTtile"
               >
-                Dragon Ball
+                {{ dCategory.title }}
               </h1>
               <p class="difDesc">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem
-                aut, optio beatae impedit voluptatem autem, quaerat
-                necessitatibus perspiciatis similique rem suscipit! Reiciendis
-                ullam praesentium veniam obcaecati facere nobis deleniti
-                consequatur!
-              </p>
-            </div>
-          </div>
-          <div class="dfAnime">
-            <div class="difImg">
-              <img
-                :src="require('../assets/dragonBall.jpg')"
-                style="height: 183px; border-radius: 7px"
-                alt=""
-              />
-            </div>
-            <div class="difTItleAndDes">
-              <h1
-                style="
-                  font-size: 1.4rem;
-                  font-family: cursive;
-                  width: 100%;
-                  display: flex;
-                  margin-left: 14px;
-                "
-                class="difTtile"
-              >
-                Dragon Ball
-              </h1>
-              <p class="difDesc">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem
-                aut, optio beatae impedit voluptatem autem, quaerat
-                necessitatibus perspiciatis similique rem suscipit! Reiciendis
-                ullam praesentium veniam obcaecati facere nobis deleniti
-                consequatur!
-              </p>
-            </div>
-          </div>
-          <div class="dfAnime">
-            <div class="difImg">
-              <img
-                :src="require('../assets/dragonBall.jpg')"
-                style="height: 183px; border-radius: 7px"
-                alt=""
-              />
-            </div>
-            <div class="difTItleAndDes">
-              <h1
-                style="
-                  font-size: 1.4rem;
-                  font-family: cursive;
-                  width: 100%;
-                  display: flex;
-                  margin-left: 14px;
-                "
-                class="difTtile"
-              >
-                Dragon Ball
-              </h1>
-              <p class="difDesc">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem
-                aut, optio beatae impedit voluptatem autem, quaerat
-                necessitatibus perspiciatis similique rem suscipit! Reiciendis
-                ullam praesentium veniam obcaecati facere nobis deleniti
-                consequatur!
-              </p>
-            </div>
-          </div>
-          <div class="dfAnime">
-            <div class="difImg">
-              <img
-                :src="require('../assets/dragonBall.jpg')"
-                style="height: 183px; border-radius: 7px"
-                alt=""
-              />
-            </div>
-            <div class="difTItleAndDes">
-              <h1
-                style="
-                  font-size: 1.4rem;
-                  font-family: cursive;
-                  width: 100%;
-                  display: flex;
-                  margin-left: 14px;
-                "
-                class="difTtile"
-              >
-                Dragon Ball
-              </h1>
-              <p class="difDesc">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem
-                aut, optio beatae impedit voluptatem autem, quaerat
-                necessitatibus perspiciatis similique rem suscipit! Reiciendis
-                ullam praesentium veniam obcaecati facere nobis deleniti
-                consequatur!
+                {{ dCategory.description }}
               </p>
             </div>
           </div>
@@ -354,9 +284,16 @@ export default {
       readoldMsgs: [],
       hisuserid: "",
       readoldMsgsError: "",
+      dataCategory: [],
+      dataNmber : 0
     };
   },
   methods: {
+    dataNmberFunc()
+    {
+      return this.dataNmber += 1
+    }
+    ,
     getIdUser(r, id) {
       let ClickToactive = document.querySelectorAll(".ClickToactive");
 
@@ -431,6 +368,22 @@ export default {
       });
 
       this.dataAnime = await resp.json();
+      console.log(this.dataAnime.genre);
+      await this.getAnimeCategorise(this.dataAnime.genre);
+    },
+    async getAnimeCategorise(category) {
+      let resp = await fetch("http://localhost/fr/AnimeC/readCategorise", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          category: category,
+        }),
+      });
+
+      this.dataCategory = await resp.json();
+      console.log(this.dataCategory);
     },
     async showData() {
       this.read_s();
@@ -664,6 +617,20 @@ export default {
 }
 .difDesc::-webkit-scrollbar {
   display: none;
+}
+
+@media screen and (max-width: 1200px) {
+  .all {
+        display: flex;
+    flex-wrap: wrap;
+       
+  }
+  .msg {
+     max-height: 339px;
+  }
+  .vidmedia {
+     max-height: 655px;
+  }
 }
 /* .Scroll {
   overflow-y: scroll;

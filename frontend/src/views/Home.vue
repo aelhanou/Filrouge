@@ -88,10 +88,12 @@ export default {
     //   }
     // },
     async ReadGenreAnime() {
+      let token = localStorage.getItem("token")
       let resp = await fetch("http://localhost/fr/KindOfAnimeC/read", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
       this.GenreData = await resp.json();

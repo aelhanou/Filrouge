@@ -68,20 +68,34 @@ class AnimeDescriptionC extends Controller
 
         $data = json_decode(file_get_contents("php://input"));
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($this->Adescription->insert($data)) {
-                echo json_encode(["Success", "Created Successfully"]);
+        $headers = $this->gettokenFromFront();
+
+        if (isset($this->valid_token($headers)->iss)) {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                if ($this->Adescription->insert($data)) {
+                    echo json_encode(["Success", "Created Successfully"]);
+                }
             }
+        } else {
+            echo json_encode(['token' => 'token is expired']);
         }
+      
     }
 
     public function delete()
     {
         $data = json_decode(file_get_contents("php://input"));
-        if ($_SERVER['REQUEST_METHOD'] == "DELETE") {
-            if ($this->Adescription->delete($data)) {
-                echo json_encode(['Success' => 'deleted Successfully']);
+    
+        $headers = $this->gettokenFromFront();
+
+        if (isset($this->valid_token($headers)->iss)) {
+            if ($_SERVER['REQUEST_METHOD'] == "DELETE") {
+                if ($this->Adescription->delete($data)) {
+                    echo json_encode(['Success' => 'deleted Successfully']);
+                }
             }
+        } else {
+            echo json_encode(['token' => 'token is expired']);
         }
     }
 
@@ -90,10 +104,17 @@ class AnimeDescriptionC extends Controller
     {
         $data = json_decode(file_get_contents("php://input"));
 
-        if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
-            if ($this->Adescription->update($data)) {
-                echo json_encode(['Success' => 'data has updated']);
+       
+        $headers = $this->gettokenFromFront();
+
+        if (isset($this->valid_token($headers)->iss)) {
+            if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+                if ($this->Adescription->update($data)) {
+                    echo json_encode(['Success' => 'data has updated']);
+                }
             }
+        } else {
+            echo json_encode(['token' => 'token is expired']);
         }
         // } else {
         //     echo json_encode("exist");
